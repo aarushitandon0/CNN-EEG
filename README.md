@@ -160,6 +160,9 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 model.fit(X_train, y_train, epochs=10, validation_split=0.2)
 ```
 
+### Test Accuracy
+- Test Accuracy: 82.6%
+- Final model shows strong ability to classify cognitive workload.
 
 ### Citation & Credit
 
