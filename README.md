@@ -164,6 +164,37 @@ model.fit(X_train, y_train, epochs=10, validation_split=0.2)
 - Test Accuracy: 82.6%
 - Final model shows strong ability to classify cognitive workload.
 
+
+## EEG Power Spectral Density (PSD) Plot
+
+The Power Spectral Density (PSD) visualization is generated using:
+
+```python
+epochs.plot_psd(fmin=1, fmax=40)
+```
+
+> *Note*: `plot_psd()` is a legacy MNE function. For newer implementations, you should use `.compute_psd().plot()`.
+
+This plot shows the **distribution of power** (in dB/Hz) over the **frequency range 1–40 Hz** across all EEG channels.
+
+####  What it tells us:
+- **X-axis**: Frequency (Hz)
+- **Y-axis**: Power (dB/Hz re 1 µV²)
+- Each colored line represents a different EEG channel.
+- The curves represent how power varies over frequencies — typically:
+  - **Delta (1–4 Hz)**: High during deep sleep.
+  - **Theta (4–8 Hz)**: Light sleep, meditation.
+  - **Alpha (8–12 Hz)**: Relaxed state, closed eyes.
+  - **Beta (12–30 Hz)**: Active thinking, alertness.
+  - **Gamma (>30 Hz)**: Complex processing, perception.
+
+#### Interpretation:
+- Peaks in different bands may correlate with **cognitive workload**, mental state, or neural activity patterns.
+- This visual is key for **feature extraction** and **band power analysis** for downstream classification (like CNN-based workload prediction).
+
+---
+
+
 ### Citation & Credit
 
 
