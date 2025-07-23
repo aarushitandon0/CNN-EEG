@@ -36,6 +36,131 @@ Subjects performed serial subtraction tasks (e.g., 3141 − 42). EEGs were recor
 > EEGs were recorded monopolarly, electrodes placed according to the international 10-20 scheme, referenced to ear electrodes.
 
 ---
+
+## 🚀 Project Flow
+
+This section outlines the complete pipeline for classifying EEG-based cognitive workload using deep learning.
+
+---
+
+### Step 1: Dataset & Labels
+
+- Downloaded EEG data from **[PhysioNet EEG-MAT](https://physionet.org/content/eegmat/1.0.0/)**.
+- Each subject has 2 files:
+  - `*_1.edf` → Baseline EEG
+  - `*_2.edf` → EEG during task
+- Labels are defined as:
+  - `0`: High workload (bad performance)
+  - `1`: Low workload (good performance)
+- Label data is stored in `subject-info.csv`.
+
+---
+
+### Step 2: Load & Preprocess EDF Files (MNE)
+
+- Loaded `.edf` files using `mne.io.read_raw_edf()`.
+- Renamed and filtered EEG channels.
+- Set standard 10-20 EEG montage for channel location mapping.
+- Sample preprocessing:
+  ```python
+  raw = mne.io.read_raw_edf(filename, preload=True)
+  raw.rename_channels(lambda x: x.replace("EEG ", ""))
+  raw.set_montage('standard_1020')
+  raw_filtered = raw.copy().filter(l_freq=1.0, h_freq=40.0)
+
+### Step 3: Visualization (EEG Analysis)
+Used MNE’s built-in plotting to understand data quality and features:
+- raw.plot() — raw signal inspection
+- raw.plot_psd(fmax=50) — Power Spectral Density
+- raw.plot_sensors() — EEG channel layout on scalp
+
+### Step 4: Epoch Creation
+- EEG data was segmented into 2-second overlapping windows using:
+```
+epochs = mne.make_fixed_length_epochs(raw_filtered, duration=2.0, overlap=1.0)
+```
+- These short epochs act as individual samples for classification.
+- Each epoch of shape: (19 channels × 128 samples)
+- Dataset shape:
+- ```
+  X shape: (67665, 19, 128)
+  y shape: (67665,)
+   ```
+
+### Step 5: Feature Extraction (Frequency Bands)
+Computed Power Spectral Density (PSD) using Welch's method:
+```
+psds, freqs = raw.compute_psd(fmin=0.5, fmax=45).get_data(return_freqs=True)
+```
+#### Band Power Feature Table
+
+> **Effective Window Size**: `4.096 s`  
+> **Note**: `pick_types()` is deprecated. Use `inst.pick(...)` instead.
+
+| Channel | Delta       | Theta       | Alpha       | Beta        | Gamma       |
+|---------|-------------|-------------|-------------|-------------|-------------|
+| Fp1     | 2.43e-11    | 4.31e-12    | 1.35e-12    | 7.17e-13    | 2.46e-13    |
+| Fp2     | 8.94e-12    | 5.47e-12    | 1.35e-12    | 6.61e-13    | 2.22e-13    |
+| F3      | 9.63e-12    | 4.83e-12    | 1.58e-12    | 6.11e-13    | 1.81e-13    |
+| F4      | 1.31e-11    | 7.03e-12    | 1.98e-12    | 7.36e-13    | 1.86e-13    |
+| F7      | 9.96e-12    | 4.80e-12    | 2.52e-12    | 7.93e-13    | 2.98e-13    |
+| F8      | 1.39e-11    | 2.99e-12    | 1.22e-12    | 5.76e-13    | 1.62e-13    |
+| T3      | 1.53e-11    | 3.05e-12    | 1.25e-12    | 4.98e-13    | 1.88e-13    |
+| T4      | 1.58e-11    | 2.75e-12    | 1.24e-12    | 5.89e-13    | 1.49e-13    |
+| C3      | 1.06e-11    | 3.80e-12    | 1.45e-12    | 4.92e-13    | 1.73e-13    |
+| C4      | 1.12e-11    | 4.49e-12    | 1.53e-12    | 5.55e-13    | 1.66e-13    |
+| T5      | 1.15e-11    | 2.88e-12    | 1.22e-12    | 5.94e-13    | 1.93e-13    |
+| T6      | 1.54e-11    | 2.81e-12    | 1.26e-12    | 6.60e-13    | 1.56e-13    |
+| P3      | 1.13e-11    | 3.45e-12    | 1.47e-12    | 5.71e-13    | 1.70e-13    |
+| P4      | 1.25e-11    | 3.21e-12    | 1.58e-12    | 5.64e-13    | 1.65e-13    |
+| O1      | 1.36e-11    | 3.71e-12    | 2.04e-12    | 7.56e-13    | 1.88e-13    |
+| O2      | 1.45e-11    | 3.75e-12    | 2.08e-12    | 7.46e-13    | 1.91e-13    |
+| Fz      | 1.62e-11    | 9.65e-12    | 2.49e-12    | 7.50e-13    | 1.94e-13    |
+| Cz      | 1.34e-11    | 5.85e-12    | 1.79e-12    | 5.76e-13    | 1.88e-13    |
+| Pz      | 1.47e-11    | 3.61e-12    | 1.56e-12    | 5.81e-13    | 1.72e-13    |
+| ECG ECG | 5.55e-11    | 1.51e-11    | 5.15e-12    | 2.14e-12    | 4.40e-13    |
+
+---
+
+ **EEG Channels Used**:  
+`['Fp1', 'Fp2', 'F3', 'F4', 'F7', 'F8', 'T3', 'T4', 'C3', 'C4', 'T5', 'T6', 'P3', 'P4', 'O1', 'O2', 'Fz', 'Cz', 'Pz', 'ECG ECG']`
+
+ **Band Power Rows Extracted**: `5`
+
+Extracted average power in frequency bands for each channel:
+
+- Delta (1–4 Hz)
+- Theta (4–8 Hz)
+- Alpha (8–12 Hz)
+- Beta (12–30 Hz)
+- Gamma (30–40 Hz)
+
+
+### Step 6: Train-Test Split
+EEG samples and labels were reshaped and split:
+
+```
+X = all_epochs.reshape(-1, 19, 128, 1)  # shape for CNN
+y = all_labels
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+```
+
+### Step 7: CNN Model for Classification
+Convolutional Neural Network designed with TensorFlow/Keras.
+
+Architecture:
+
+- 2 Conv2D + MaxPooling layers
+- Flatten + Dense + Dropout
+- Output: Sigmoid activation for binary classification
+
+Compiled & trained:
+```
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.fit(X_train, y_train, epochs=10, validation_split=0.2)
+```
+
+
 ### Citation & Credit
 
 
