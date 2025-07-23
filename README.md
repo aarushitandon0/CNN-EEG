@@ -37,7 +37,7 @@ Subjects performed serial subtraction tasks (e.g., 3141 − 42). EEGs were recor
 
 ---
 
-## 🚀 Project Flow
+## Project Flow
 
 This section outlines the complete pipeline for classifying EEG-based cognitive workload using deep learning.
 
@@ -201,7 +201,7 @@ The EEG signals were recorded using the standard **10–20 International System*
 
 ### Electrode Layout
 
-![Topomap Layout](assets/topomap_layout.png)
+![Topomap Layout](https://github.com/aarushitandon0/CNN-EEG/blob/main/images/Screenshot%202025-07-24%20022355.png)
 
 This layout illustrates the electrode positions used in the experiment. Key electrodes like **Fz, Cz, Pz** are crucial for detecting cognitive workload changes.
 
