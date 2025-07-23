@@ -215,6 +215,7 @@ This layout illustrates the electrode positions used in the experiment. Key elec
 This topographical map helps in understanding the **spatial distribution of brain activity**, and is used both during preprocessing and in interpreting CNN attention.
 
 ## Raw EEG Signal Plot
+![image3](https://github.com/aarushitandon0/CNN-EEG/blob/main/images/Screenshot%202025-07-24%20022655.png)
 
 Before proceeding with any preprocessing or modeling, it's essential to **visually inspect the raw EEG signals** to identify artifacts, baseline shifts, or abnormalities.
 
