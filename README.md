@@ -195,6 +195,26 @@ This plot shows the **distribution of power** (in dB/Hz) over the **frequency ra
 
 ---
 
+## EEG Topomap Visualization
+
+The EEG signals were recorded using the standard **10–20 International System**, covering 19 scalp locations including frontal (F), temporal (T), central (C), parietal (P), and occipital (O) regions.
+
+### Electrode Layout
+
+![Topomap Layout](assets/topomap_layout.png)
+
+This layout illustrates the electrode positions used in the experiment. Key electrodes like **Fz, Cz, Pz** are crucial for detecting cognitive workload changes.
+
+### Channel Importance
+
+- **Frontal Region (F3, F4, Fz):** Associated with attention and working memory
+- **Central Region (C3, Cz, C4):** Useful in motor and cognitive control
+- **Parietal/Occipital (Pz, O1, O2):** Visual processing and cognitive load
+- **Temporal (T3, T4, T5, T6):** Involved in language and auditory tasks
+
+This topographical map helps in understanding the **spatial distribution of brain activity**, and is used both during preprocessing and in interpreting CNN attention.
+
+
 
 ### Citation & Credit
 
