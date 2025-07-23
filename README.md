@@ -214,7 +214,23 @@ This layout illustrates the electrode positions used in the experiment. Key elec
 
 This topographical map helps in understanding the **spatial distribution of brain activity**, and is used both during preprocessing and in interpreting CNN attention.
 
+## Raw EEG Signal Plot
 
+Before proceeding with any preprocessing or modeling, it's essential to **visually inspect the raw EEG signals** to identify artifacts, baseline shifts, or abnormalities.
+
+We used MNE's `raw.plot()` function for this purpose:
+
+```python
+raw.plot(n_channels=20, scalings='auto', duration=10, start=0)
+```
+- n_channels=20: Displays 20 EEG channels.
+- scalings='auto': Auto scales the amplitude based on the signal range.
+- duration=10: Shows 10 seconds of signal per screen.
+- start=0: Begins at the start of the recording.
+
+#### Sample Raw EEG Output
+As seen above, each channel represents the potential difference over time, giving insight into brain activity. Channels like Fp1, Cz, Pz, O1 are used in analysis, and ECG is often removed to reduce noise.
+This visual inspection is a key step before bandpass filtering, artifact removal, or applying machine learning models.
 
 ### Citation & Credit
 
