@@ -166,7 +166,7 @@ model.fit(X_train, y_train, epochs=10, validation_split=0.2)
 
 
 ## EEG Power Spectral Density (PSD) Plot
-
+[Image](https://github.com/aarushitandon0/CNN-EEG/blob/main/images/Screenshot%202025-07-24%20022105.png)
 The Power Spectral Density (PSD) visualization is generated using:
 
 ```python
