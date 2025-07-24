@@ -18,12 +18,6 @@ This project explores cognitive workload classification using EEG signals and Co
 
 ---
 
-## Project Objective
-
-To classify EEG recordings into **low** and **high** cognitive workload categories using a deep learning model trained on preprocessed EEG epochs.
-
----
-
 ## Study Background
 
 > **Original Study Title**: Electroencephalograms during Mental Arithmetic Task Performance  
@@ -36,6 +30,41 @@ Subjects performed serial subtraction tasks (e.g., 3141 − 42). EEGs were recor
 > EEGs were recorded monopolarly, electrodes placed according to the international 10-20 scheme, referenced to ear electrodes.
 
 ---
+
+## Project Objective
+
+To classify EEG recordings into **low** and **high** cognitive workload categories using a deep learning model trained on preprocessed EEG epochs.
+
+---
+
+##  Tech Stack
+
+### **Languages**
+-  Python 3
+
+### **Signal Processing & EEG Tools**
+- [MNE](https://mne.tools/stable/index.html) — EEG signal reading, filtering, visualization from `.edf` files
+
+### **Machine Learning**
+- [TensorFlow](https://www.tensorflow.org/) + Keras — CNN model for binary classification
+- [scikit-learn](https://scikit-learn.org/) — data preprocessing, normalization, train-test split
+
+### **Data Handling**
+- NumPy — matrix and array operations  
+- Pandas — loading and manipulating CSV label data
+
+### **Visualization**
+- Matplotlib — EEG waveform plots, PSD plots, accuracy/loss graphs
+
+### **Development Environment**
+- Jupyter Notebook or Google Colab (recommended)
+- VSCode (for modular `.py` development)
+
+### **Dataset**
+-  [UCI EEG Arithmetic Dataset](https://archive.ics.uci.edu/ml/datasets/eeg+database)
+
+### **Version Control**
+- Git & GitHub — code sharing, documentation, collaboration
 
 ## Project Flow
 
